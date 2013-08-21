@@ -16,8 +16,15 @@ var coll = new Instabone.Collection([], { clientId: 'eee3957c1623496b9ef3dd543b7
 if(argv.tagname) {
 
   console.log('Fetching media tagged with %s...', argv.tagname);
-  coll.searchTags(argv.tagname, function(err) {
-    console.log(arguments);
+  coll.searchTags(argv.tagname, function(err, data) {
+    if(err) {
+      console.log('ERROR!');
+      console.log(err);
+      return;
+    }
+
+    console.log('data:');
+    console.log(data);
 
   });
 } else if(argv.username) {

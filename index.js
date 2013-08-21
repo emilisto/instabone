@@ -54,18 +54,39 @@ var Collection = Backbone.Collection.extend({
 
   parse: function(resp) {
     // FIXME: I removed order, sort order exists maybe?
-    console.log(resp);
     return resp.data;
   },
 
   fetch: function(options) {
     options = _.defaults(options || {}, this.ajaxOptions || {});
+    addErrorHandling(options);
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
 });
+
+// Instagram doesn't return appropriate HTTP response codes, but instead
+// includes the code inside the response body. This tricks Backbone's error
+// handling - this functions gives Backbone what it expects.
+function addErrorHandling(options) {
+  var success = options.success || function() {};
+  var error = options.error || function() {};
+
+  options.success = function(obj, data) {
+    var m = data.meta;
+    if(m.code >= 400) {
+      var _error = new Error(m.error_type + '(' + m.code + '): ' + m.error_message);
+      return error.call(obj, _error);
+    }
+    return success.call(obj, data);
+  };
+  options.error = function() {
+    error.apply(obj, arguments);
+  };
+};
 
 module.exports = {
   version: '0.0.0',
   Collection: Collection,
   MediaModel: MediaModel
 };
+
