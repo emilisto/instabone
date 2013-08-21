@@ -8,8 +8,8 @@
     "build": "browserify index.js -o browsertest/instabone.js"
   },
   "repository": "",
-  "author": "Emil Stenqvist <emil@fibr.io>",
-  "license": "BSD",
+  "author": "Emil Stenqvist <emil@shootitlive.com>",
+  "license": "GPLv3",
   "devDependencies": {
     "backbone": "~1.0.0",
     "browserify": "~2.28.0",

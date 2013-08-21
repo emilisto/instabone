@@ -49,6 +49,10 @@ var Collection = Backbone.Collection.extend({
     });
   },
 
+  searchUsers: function(query, cb) {
+    cb = cb || function() {};
+  },
+
   url: function() {
     if(!this.clientId) throw "must give client id when initializing";
     if(!this.tagName) throw "must specify tag before fetching";
@@ -57,7 +61,7 @@ var Collection = Backbone.Collection.extend({
   },
 
   parse: function(resp) {
-    // FIXME: I removed order, sort order exists maybe?
+    // FIXME: I removed order, sort order is sent from Instagram maybe?
     return resp.data;
   },
 
