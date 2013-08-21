@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var Instabone = require('./../index');
+var prettyjson = require('prettyjson');
+
+var optimist = require('optimist')
+  .usage('Search the Instagram API\nUsage: $0 [-t <tagname>] | [-u <username>]')
+  .alias('t', 'tagname')
+  .describe('t', 'Search by tagname')
+  .alias('u', 'username')
+  .describe('u', 'Search by username');
+var argv = optimist.argv;
+
+var coll = new Instabone.Collection([], { clientId: 'eee3957c1623496b9ef3dd543b7276f0' });
+
+if(argv.tagname) {
+
+  console.log('Fetching media tagged with %s...', argv.tagname);
+  coll.searchTags(argv.tagname, function(err) {
+    console.log(arguments);
+
+  });
+} else if(argv.username) {
+  console.log('Fetching media by users matching %s...', argv.username);
+} else {
+  optimist.showHelp();
+}

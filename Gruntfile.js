@@ -34,7 +34,7 @@ module.exports = function (grunt) {
 
     shell: {
       browserify: {
-        command: '<%= config.browserify %> -s Instabone -r ./index -o ./build/instabone.js'
+        command: '<%= config.browserify %> -s Instabone -r ./index.browser -o ./build/instabone.js'
       }
     }
 
@@ -50,6 +50,7 @@ module.exports = function (grunt) {
     'shell:browserify',
     'postBuildMessage'
   ]);
+
   grunt.registerTask('browsertest', [
     'build',
     'open',

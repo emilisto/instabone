@@ -1,12 +1,16 @@
 <html>
   <body>
     <h1>Instabone Browser Test</h1>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/instabone.js"></script>
     <script>
       (function() {
-        var Instabone = require('instabone');
-        console.log(Instabone);
-      });
+        var coll = new Instabone.Collection([], { clientId: 'eee3957c1623496b9ef3dd543b7276f0' });
+        console.log(coll);
+        coll.searchTags('paris').then(function() {
+          console.log(arguments);
+        });
+      }());
     </script>
   </body>
 </html>
