@@ -19,7 +19,8 @@ var MediaModel = Backbone.Model.extend({
 
   parse: function(media) {
     if(media && media.caption) {
-      media.caption.text = stripNonAscii(media.caption.text);
+      // TODO: add filtering of caption here
+      media.caption.text = media.caption.text;
     }
     return media;
   }
@@ -38,7 +39,10 @@ var Collection = Backbone.Collection.extend({
   },
 
   searchTags: function(tagname, cb) {
+    cb = cb || function() {};
+
     this.tagName = tagname;
+
     return this.fetch({
       success: function(data) { cb(null, data); },
       error: function(data) { cb(data); }
@@ -59,7 +63,12 @@ var Collection = Backbone.Collection.extend({
 
   fetch: function(options) {
     options = _.defaults(options || {}, this.ajaxOptions || {});
+    options.data = _.extend(options.data || {}, {
+      client_id: this.clientId
+    });
+
     addErrorHandling(options);
+
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
 });

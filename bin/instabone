@@ -17,6 +17,7 @@ if(argv.tagname) {
 
   console.log('Fetching media tagged with %s...', argv.tagname);
   coll.searchTags(argv.tagname, function(err, data) {
+
     if(err) {
       console.log('ERROR!');
       console.log(err);

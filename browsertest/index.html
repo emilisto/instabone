@@ -9,9 +9,18 @@
         coll.ajaxOptions = { dataType: 'jsonp' };
 
         console.log(coll);
-        coll.searchTags('paris').then(function() {
-          console.log(arguments);
-        });
+        coll.searchTags('paris', function(err, data) {
+
+          if(err) {
+            console.log('ERROR!');
+            console.log(err);
+            return;
+          }
+
+          console.log('data:');
+          console.log(coll.models);
+
+        })
       }());
     </script>
   </body>
