@@ -5,6 +5,7 @@ node:
 browser:
 	@npm install -g grunt-cli
 	@npm install
+	@tools/generate-certs.sh
 	@echo
 	@echo 'All dependencies installed, do `grunt build` to create build/instabone.js'
 	@echo

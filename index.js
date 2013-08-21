@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 // FIXME: not perfectly happy with this, where to inject it? See
 // index.browser.js for more brainfood...
-if(!Backbone.$) Backbone.ajax = require('najax');
+if(typeof window === 'undefined') Backbone.ajax = require('najax');
 
 var MediaModel = Backbone.Model.extend({
   getImageUrl: function(size) {

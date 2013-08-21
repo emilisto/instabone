@@ -1,5 +1,11 @@
 'use strict';
 
+var crypto = require('crypto'),
+    fs = require('fs'),
+    connect = require('connect'),
+    _ = require('underscore'),
+    https = require('https');
+
 module.exports = function (grunt) {
   // load all grunt tasks
 
@@ -14,16 +20,6 @@ module.exports = function (grunt) {
       options: {
         port: 1234,
         hostname: '0.0.0.0'
-      },
-      default: {
-        options: {
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, 'build'),
-              mountFolder(connect, 'browsertest'),
-            ];
-          }
-        }
       }
     },
     open: {
@@ -46,6 +42,32 @@ module.exports = function (grunt) {
     grunt.log.ok('');
   });
 
+  grunt.registerTask('connect', function() {
+    var options = _.defaults(grunt.config('connect.options'), {
+      hostname: 'localhost',
+      port: 1234
+    });
+
+    // Load SSL credentials
+    var sslOptions = {
+      key: fs.readFileSync('ssl/privatekey.pem').toString(),
+      cert: fs.readFileSync('ssl/certificate.pem').toString()
+    };
+
+    var app = connect()
+      .use(mountFolder(connect, 'build'))
+      .use(mountFolder(connect, 'browsertest'));
+
+    https.createServer(sslOptions, app)
+      .listen(options.port, options.hostname)
+      .on('listening', function() {
+        grunt.log.writeln('Started connect web server on ' + options.hostname + ':' + options.port + '.');
+      });
+
+    this.async();
+
+  });
+
   grunt.registerTask('build', [
     'shell:browserify',
     'postBuildMessage'
@@ -54,7 +76,7 @@ module.exports = function (grunt) {
   grunt.registerTask('browsertest', [
     'build',
     'open',
-    'connect:default:keepalive',
+    'connect',
   ]);
 
 };
