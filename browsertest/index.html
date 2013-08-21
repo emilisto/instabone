@@ -6,6 +6,8 @@
     <script>
       (function() {
         var coll = new Instabone.Collection([], { clientId: 'eee3957c1623496b9ef3dd543b7276f0' });
+        coll.ajaxOptions = { dataType: 'jsonp' };
+
         console.log(coll);
         coll.searchTags('paris').then(function() {
           console.log(arguments);

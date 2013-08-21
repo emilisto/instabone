@@ -28,6 +28,7 @@ var MediaModel = Backbone.Model.extend({
 var Collection = Backbone.Collection.extend({
   model: MediaModel,
   baseUrl: 'https://api.instagram.com/v1',
+  ajaxOptions: {},
 
   initialize: function(models, options) {
     _.bindAll(this, 'searchTags', 'url');
@@ -58,7 +59,7 @@ var Collection = Backbone.Collection.extend({
   },
 
   fetch: function(options) {
-    options = options || {};
+    options = _.defaults(options || {}, this.ajaxOptions || {});
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
 });
